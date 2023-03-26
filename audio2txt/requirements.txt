@@ -1,6 +1,12 @@
 openai
 streamlit
-pydub
+pytube
 whisper 
+git+https://github.com/openai/whisper.git
+pydub
 ffmpeg
-ffprob
+ffmpeg-python
+click
+PyPDF2
+moviepy
+reportlab
