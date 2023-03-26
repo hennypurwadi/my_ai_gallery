@@ -10,18 +10,18 @@ import os
 # Set API key as a secret
 with open('api_key.txt', 'r') as f:
     api_key = f.read().strip()
-openai.api_key = api_key    
+openai.api_key = api_key
 
 # Convert mp4 to wav
-def convert_to_wav(audio_data):
-    audio = AudioSegment.from_file(audio_data, format='mp4')
-    temp_file = tempfile.NamedTemporaryFile(delete=False)
-    audio.export(temp_file.name, format="wav")
-    return temp_file.name
+def mp4_to_wav(mp4_file):
+    audio = AudioSegment.from_file(mp4_file, format="mp4")
+    wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+    audio.export(wav_file.name, format="wav")
+    return wav_file.name
 
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
-    wav_file = convert_to_wav(audio_file)
+    wav_file = mp4_to_wav(audio_file)
     with open(wav_file, "rb") as file:
         transcript = openai.Audio.transcribe("whisper-1", file)
     os.unlink(wav_file)
@@ -34,35 +34,35 @@ video_url = st.text_input("Enter YouTube video URL:")
 
 # Check if the input is a valid YouTube URL
 if video_url.startswith("https://www.youtube.com/") or video_url.startswith("https://youtu.be/"):
-    
     try:
-        # Load the YouTube video
-        youtube_video = YouTube(video_url)
-        st.write(f"Video title: {youtube_video.title}")
+        yt = YouTube(video_url)
+        video_title = yt.title
+        st.subheader(f"Video title: {video_title}")
 
-        # Filter to get only audio streams and select the first one
-        streams = youtube_video.streams.filter(only_audio=True)
-        stream = streams.first()
+        stream = yt.streams.filter(only_audio=True).first()
+        mp4_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+        stream.download(output_path=mp4_file.name)
+    
+        # Transcribe the audio
+        st.write("Transcribing video... Please wait.")
+        transcript = transcribe_audio(mp4_file.name)
 
-        # Download the audio stream to memory
-        audio_data = BytesIO()
-        stream.stream_to_buffer(audio_data)
-        audio_data.seek(0)
-
-        # Transcribe the audio data
-        with st.spinner("Transcribing YouTube video..."):
-            transcript = transcribe_audio(audio_data)
-
-        st.subheader("Transcription")
+        # Display the transcript
+        st.subheader("Transcript:")
         st.write(transcript)
+        
+         # Download transcript as a text file
+        st.download_button(
+            label="Download Transcript",
+            data=BytesIO(transcript.encode("utf-8")),
+            file_name=f"{video_title}_transcript.txt",
+            mime="text/plain",
+        )
+        # Clean up the temporary files
+        os.unlink(mp4_file.name)
 
-        # Create a download button for the transcription
-        if st.button("Download Transcription"):
-            st.download_button(
-                "Download Transcription", data=transcript, file_name="transcription.txt"
-            )
     except Exception as e:
         st.error(f"Error: {e}")
-else:
-    if video_url:
-        st.error("Invalid YouTube URL. Please enter a valid URL.")
+        
+    else:
+        st.warning("Please enter a valid YouTube URL.")      
