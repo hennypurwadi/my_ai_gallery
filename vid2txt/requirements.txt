@@ -1,0 +1,11 @@
+openai
+streamlit
+pytube
+whisper 
+git+https://github.com/openai/whisper.git
+pydub
+ffmpeg
+ffmpeg-python
+click
+PyPDF2
+moviepy
