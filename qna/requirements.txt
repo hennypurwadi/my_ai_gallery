@@ -1,0 +1,7 @@
+openai
+streamlit
+click
+PyPDF2
+transformers
+tensorflow
+torch
