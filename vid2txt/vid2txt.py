@@ -53,28 +53,26 @@ if video_url.startswith("https://www.youtube.com/") or video_url.startswith("htt
         
 else:
     st.warning("Please enter a valid YouTube URL.")
-
     st.subheader("Upload Audio and Transcribe")
-
     uploaded_audio = st.file_uploader("Upload the audio file:")
 
 if uploaded_audio:
     try:
-    # Transcribe the audio
-    st.write("Transcribing audio... Please wait.")
-    transcript = transcribe_audio(uploaded_audio)
-    
-    # Display the transcript
-    st.subheader("Transcript:")
-    st.write(transcript)
+        # Transcribe the audio
+        st.write("Transcribing audio... Please wait.")
+        transcript = transcribe_audio(uploaded_audio)
 
-    # Download transcript as a text file
-    st.download_button(
-        label="Download Transcript",
-        data=BytesIO(transcript.encode("utf-8")),
-        file_name="transcript.txt",
-        mime="text/plain",
-    )
+        # Display the transcript
+        st.subheader("Transcript:")
+        st.write(transcript)
+
+        # Download transcript as a text file
+        st.download_button(
+            label="Download Transcript",
+            data=BytesIO(transcript.encode("utf-8")),
+            file_name="transcript.txt",
+            mime="text/plain",
+        )
 
     except Exception as e:
         st.error(f"Error: {e}")
