@@ -33,6 +33,7 @@ if video_url.startswith("https://www.youtube.com/") or video_url.startswith("htt
         stream = yt.streams.filter(only_audio=True).first()
         temp_file_1 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
         stream.download(output_path=temp_file_1.name)
+        temp_file_1.close()
 
         # Transcribe the audio
         st.write("Transcribing video... Please wait.")
