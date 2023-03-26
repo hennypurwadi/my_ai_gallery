@@ -1,21 +1,8 @@
 
-import streamlit as st
-import openai
-from pytube import YouTube
-from io import BytesIO
-from pydub import AudioSegment
-import tempfile
-import os
-
-# Set API key as a secret
-with open('api_key.txt', 'r') as f:
-    api_key = f.read().strip()
-openai.api_key = api_key
-
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
-    audio_file.seek(0)
-    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    with open(audio_file.name, "rb") as file:
+        transcript = openai.Audio.transcribe("whisper-1", file)
     return transcript['text']
 
 st.title("YouTube Video Transcription")
@@ -31,10 +18,11 @@ if video_url.startswith("https://www.youtube.com/") or video_url.startswith("htt
         st.subheader(f"Video title: {video_title}")
 
         stream = yt.streams.filter(only_audio=True).first()
+
+        # Save the file with the video title
         temp_file_1 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
-        stream.download(output_path=temp_file_1.name)
+        stream.download(output_path=temp_file_1.name, filename=f"{video_title}.mp4")
         temp_file_1.close()
-        os.remove(temp_file_1.name)
 
         # Transcribe the audio
         st.write("Transcribing video... Please wait.")
