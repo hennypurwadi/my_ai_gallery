@@ -7,4 +7,3 @@ ffmpeg
 ffmpeg-python
 click
 PyPDF2
-moviepy
