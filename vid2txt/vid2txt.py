@@ -1,4 +1,16 @@
 
+import streamlit as st
+import openai
+from pytube import YouTube
+from io import BytesIO
+import tempfile
+import os
+
+# Set API key as a secret
+with open('api_key.txt', 'r') as f:
+    api_key = f.read().strip()
+openai.api_key = api_key
+
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
     with open(audio_file.name, "rb") as file:
