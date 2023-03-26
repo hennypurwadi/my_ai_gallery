@@ -14,8 +14,8 @@ openai.api_key = api_key
 
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
-    with open(audio_file.name, "rb") as file:
-        transcript = openai.Audio.transcribe("whisper-1", file)
+    audio_file.seek(0)
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
     return transcript['text']
 
 st.title("YouTube Video Transcription")
