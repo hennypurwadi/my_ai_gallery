@@ -13,9 +13,10 @@ openai.api_key = api_key
 
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
-    with open(audio_file.name, "rb") as file:
-        transcript = openai.Audio.transcribe("whisper-1", file)
+    audio_file.seek(0)
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
     return transcript['text']
+
 
 st.title("YouTube Video Transcription")
 
@@ -32,6 +33,7 @@ if video_url.startswith("https://www.youtube.com/") or video_url.startswith("htt
         stream = yt.streams.filter(only_audio=True).first()
 
         # Save the file with the video title
+        st.write("Save the file with the video title... Please wait.")
         temp_file_1 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
         stream.download(output_path=temp_file_1.name, filename=f"{video_title}.mp4")
         temp_file_1.close()
