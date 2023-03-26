@@ -5,8 +5,10 @@ from pydub import AudioSegment
 import tempfile
 import os
 
-# Set up the OpenAI API key
-openai.api_key = 'your-openai-api-key'
+# Set API key as a secret
+with open('api_key.txt', 'r') as f:
+    api_key = f.read().strip()
+openai.api_key = api_key    
 
 # Convert mp4 to wav
 def convert_to_wav(audio_file):
