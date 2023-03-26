@@ -1,5 +1,5 @@
 # pdf_summarizer
-Cloud link: https://hennypurwadi-pdf-summary-pdf-summary-xlstst.streamlit.app/
+Cloud link: 
 
 #Please replace api_key.txt with your own API_KEY
 #
