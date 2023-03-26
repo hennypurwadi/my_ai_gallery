@@ -3,3 +3,4 @@ streamlit
 pydub
 whisper 
 ffmpeg
+ffprob
