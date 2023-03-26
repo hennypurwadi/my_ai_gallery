@@ -14,7 +14,7 @@ openai.api_key = api_key
 
 # Convert mp4 to wav
 def mp4_to_wav(mp4_file):
-    audio = AudioSegment.from_file(mp4_file, format="mp4")
+    audio = AudioSegment.from_file(mp4_file.name, format="mp4")
     wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     audio.export(wav_file.name, format="wav")
     return wav_file.name
