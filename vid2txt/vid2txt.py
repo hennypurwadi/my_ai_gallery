@@ -15,9 +15,10 @@ openai.api_key = api_key
 # Convert mp4 to wav
 def mp4_to_wav(mp4_file):
     audio = AudioSegment.from_file(mp4_file, format="mp4")
-    wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    audio.export(wav_file.name, format="wav")
-    return wav_file.name
+    wav_fd, wav_file = tempfile.mkstemp(suffix=".wav")
+    os.close(wav_fd)
+    audio.export(wav_file, format="wav")
+    return wav_file
 
 # Transcribe the audio file using Whisper
 def transcribe_audio(audio_file):
