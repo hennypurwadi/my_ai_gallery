@@ -1,12 +1,11 @@
 
 import openai
 import streamlit as st
-import pandas as pd
 from PyPDF2 import PdfReader
-import io
+import openpyxl
 
 def load_pdf(file):
-    pdf_reader = PdfReader(io.BytesIO(file.read()))
+    pdf_reader = PdfReader(file)
     num_pages = len(pdf_reader.pages)
     text = ""
     for page in range(num_pages):
@@ -14,44 +13,43 @@ def load_pdf(file):
         text += page_obj.extract_text()
     return text
 
-def load_csv(file):
-    df = pd.read_csv(file)
-    text = df.to_string()
-    return text
-
 def load_xlsx(file):
-    df = pd.read_excel(file)
-    text = df.to_string()
+    workbook = openpyxl.load_workbook(file, read_only=True)
+    sheet = workbook.active
+    data = []
+
+    for row in sheet.iter_rows(values_only=True):
+        data.append(row)
+
+    text = ""
+    for row in data:
+        text += " ".join([str(cell) for cell in row]) + "\n"
+    
     return text
 
 def main():    
     # Set API key as a secret
     with open('api_key.txt', 'r') as f:
         api_key = f.read().strip()
-    openai.api_key = api_key    
-    
+    openai.api_key = api_key 
+
     # Prompt user to upload a file
-    file = st.file_uploader("Upload a PDF, CSV, or XLSX file", type=["pdf", "csv", "xlsx"])
+    file = st.file_uploader("Upload a PDF or XLSX file", type=["pdf", "xlsx"])
 
-    # Extract text if file is uploaded
+    # Generate summary and example QnAs if file is uploaded
     if file is not None:
-        file_ext = file.name.split('.')[-1]
-        
-        if file_ext == "pdf":
-            with st.spinner('Extracting text from PDF...'):
+        # Read file content
+        with st.spinner('Extracting text from file...'):
+            if file.type == "application/pdf":
                 text = load_pdf(file)
-        elif file_ext == "csv":
-            with st.spinner('Extracting text from CSV...'):
-                text = load_csv(file)
-        elif file_ext == "xlsx":
-            with st.spinner('Extracting text from XLSX...'):
+            elif file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 text = load_xlsx(file)
-
-        # Assign file content to prompt var
+                
+        # Assign PDF content to prompt var
         prompt = text
 
         # Set up Streamlit app 
-        st.title("Ask a Question about the Document")
+        st.title("Ask a Question about Your Document")
 
         # Prompt user to enter a question
         question = st.text_input("What do you want to know about it?")
@@ -81,7 +79,7 @@ def main():
             st.write(f"A: {answer_output}\n")
                     
 if __name__ == "__main__":
-    st.set_page_config(page_title='Document Question and Answer', page_icon=':books:')
-    st.title('Document Question and Answer')
-    st.write('App to answer your questions about PDF, CSV, or XLSX documents.')
+    st.set_page_config(page_title='PDF Question and Answer', page_icon=':books:')
+    st.title('PDF Question and Answer')
+    st.write('App to answer your questions about PDF or XLSX documents.')
     main()
