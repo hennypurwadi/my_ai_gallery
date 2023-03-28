@@ -53,8 +53,8 @@ def main():
 
         # Generate answer if user inputs a question
         if question:
-            prompt = f"Answer the question as truthfully as possible using the provided text. +\
-            If the answer is not contained within the text below, say 'I don't know'.\n\n{prompt}"
+            prompt = "Answer the question as truthfully as possible using the provided text. " + \
+                     "If the answer is not contained within the text below, say 'I don't know'.\n\n"
             prompt_with_question= f"{prompt}\n\nQuestion: {question}\nA"
             response = openai.Completion.create(
                 prompt=prompt_with_question,
