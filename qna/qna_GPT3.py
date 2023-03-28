@@ -56,20 +56,20 @@ def main():
         # Prompt user to enter a question
         question = st.text_input("What do you want to know about it?")
 
-        # Generate answer if user inputs a question
+        # Generate answer if user inputs question
         if question:
             prompt = f"Answer the question as truthfully as possible using the provided text. If the answer is not contained within the text below, say 'I don't know'.\n\n{prompt}"
             prompt_with_question= f"{prompt}\n\nQuestion: {question}\nA"
             response = openai.Completion.create(
                 prompt=prompt_with_question,
                 temperature=0.0,
-                max_tokens=1024,
+                max_tokens=512,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
                 model="text-davinci-003",
                 stop=["Q:", "\n"],
-                timeout=600  # wait for 600 seconds before timing out
+                timeout=100  # wait for 100 seconds before timing out
             )
 
             # Extract answer from OpenAI API response
