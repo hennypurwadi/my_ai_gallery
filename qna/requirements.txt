@@ -1,7 +1,12 @@
-openai
 streamlit
+pandas
+Pillow
+requests
 click
 PyPDF2
-transformers
-tensorflow
-torch
+numpy
+pandas
+openai
+openpyxl
+
+
