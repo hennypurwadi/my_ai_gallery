@@ -21,6 +21,7 @@ def main():
 
     # Generate image based on prompt
     if prompt:
+
         # Set parameters for DALL-E API call
         params = {
             "model": "image-alpha-001",
@@ -32,17 +33,17 @@ def main():
         # Make API call to generate image
         response = openai.Image.create(**params)
 
-    # Check if response was successful
-    if response.status_code == 200:
-        # Get image data from response
-        image_data = response.content
+        # Check if response was successful
+        if response.status_code == 200:
+            # Get image data from response
+            image_data = response.content
 
-        # Display image using Streamlit
-        st.image(BytesIO(image_data), caption=f"Generated image for prompt: {prompt}", use_column_width=True)
+            # Display image using Streamlit
+            st.image(BytesIO(image_data), caption=f"Generated image for prompt: {prompt}", use_column_width=True)
 
-    else:
-        # Display error message if API call was unsuccessful
-        st.error(f"An error occurred while generating the image. Error code: {response.status_code}")
+        else:
+            # Display error message if API call was unsuccessful
+            st.error(f"An error occurred while generating the image. Error code: {response.status_code}")
 
-if name == "main":
+if __name__ == "__main__":
     main()
