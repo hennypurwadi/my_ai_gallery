@@ -21,16 +21,16 @@ def main():
 
     # Generate image based on prompt
     if prompt:
-    # Set parameters for DALL-E API call
-    params = {
-        "model": "image-alpha-001",
-        "prompt": prompt,
-        "num_images": 1,
-        "size": "256x256",
-    }
+        # Set parameters for DALL-E API call
+        params = {
+            "model": "image-alpha-001",
+            "prompt": prompt,
+            "num_images": 1,
+            "size": "256x256",
+        }
 
-    # Make API call to generate image
-    response = openai.Image.create(**params)
+        # Make API call to generate image
+        response = openai.Image.create(**params)
 
     # Check if response was successful
     if response.status_code == 200:
