@@ -2,7 +2,7 @@
 import openai
 import streamlit as st
 import pandas as pd
-from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfReader
 import io
 
 def load_pdf(file):
