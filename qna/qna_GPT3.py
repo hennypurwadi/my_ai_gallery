@@ -26,13 +26,13 @@ def load_xlsx(file):
 
 def main():
     # Prompt user to enter API key
-    api_key = st.text_input("Enter your OpenAI API key", type="password")
+    api_key = st.text_input("Enter your OpenAI API key got from https://platform.openai.com/account/api-keys", type="password")
 
     # Set API key
     openai.api_key = api_key
     
     # Prompt user to upload a file
-    file = st.file_uploader("Upload a PDF, CSV, or XLSX file", type=["pdf", "csv", "xlsx"])
+    file = st.file_uploader("Upload a readable .pdf(NOT an image scanned Pdf), .csv, or .xlsx file", type=["pdf", "csv", "xlsx"])
 
     # Extract text if file is uploaded
     if file is not None:
