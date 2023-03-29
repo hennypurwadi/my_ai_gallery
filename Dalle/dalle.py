@@ -5,8 +5,6 @@ import streamlit as st
 from io import BytesIO
 
 import streamlit as st
-import base64
-from dish2image import Dish2Image
 
 def main():
     # Set page title and favicon
@@ -23,16 +21,29 @@ def main():
 
     # Generate image based on prompt
     if prompt:
-        dalle = Dish2Image(prompt)
-        image = dalle.generate_image()
+    # Set parameters for DALL-E API call
+    params = {
+        "model": "image-alpha-001",
+        "prompt": prompt,
+        "num_images": 1,
+        "size": "256x256",
+    }
 
-        # Display generated image
-        st.image(image, use_column_width=True)
+    # Make API call to generate image
+    response = openai.Image.create(**params)
 
-        # Allow user to download generated image
-        b64 = base64.b64encode(image.read()).decode()
-        href = f'<a href="data:application/octet-stream;base64,{b64}" download="{dalle.title}.jpg">Download generated image</a>'
-        st.markdown(href, unsafe_allow_html=True)
+    # Check if response was successful
+    if response.status_code == 200:
+        # Get image data from response
+        image_data = response.content
 
+        # Display image using Streamlit
+        st.image(BytesIO(image_data), caption=f"Generated image for prompt: {prompt}", use_column_width=True)
+
+    else:
+        # Display error message if API call was unsuccessful
+        st.error(f"An error occurred while generating the image. Error code: {response.status_code}")
+
+Regenerate response
 if __name__ == "__main__":
     main()
