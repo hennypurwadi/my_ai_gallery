@@ -33,17 +33,10 @@ def main():
         # Make API call to generate image
         response = openai.Image.create(**params)
 
-        # Check if response was successful
-        if response.status_code == 200:
-            # Get image data from response
-            image_data = response.content
-
-            # Display image using Streamlit
-            st.image(BytesIO(image_data), caption=f"Generated image for prompt: {prompt}", use_column_width=True)
-
-        else:
-            # Display error message if API call was unsuccessful
-            st.error(f"An error occurred while generating the image. Error code: {response.status_code}")
+        # Get image data from response
+        image_data = response.content
+        # Display image using Streamlit
+        st.image(BytesIO(image_data), caption=f"Generated image for prompt: {prompt}", use_column_width=True)
 
 if __name__ == "__main__":
     main()
