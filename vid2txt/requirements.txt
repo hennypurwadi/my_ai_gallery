@@ -1,9 +1,0 @@
-openai
-streamlit
-pytube
-whisper 
-pydub
-ffmpeg
-ffmpeg-python
-click
-PyPDF2
