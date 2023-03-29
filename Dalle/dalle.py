@@ -6,6 +6,7 @@ from io import BytesIO
 
 import streamlit as st
 import base64
+from dish2image import Dish2Image
 
 def main():
     # Set page title and favicon
