@@ -44,5 +44,5 @@ def main():
         # Display error message if API call was unsuccessful
         st.error(f"An error occurred while generating the image. Error code: {response.status_code}")
 
-if __name__ == "__main__":
+if name == "main":
     main()
