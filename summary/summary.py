@@ -6,22 +6,22 @@ from PyPDF2 import PdfFileReader
 import io
 
 def load_pdf(file):
-    pdf_reader = PdfFileReader(io.BytesIO(file.read()))
-    num_pages = pdf_reader.getNumPages()
+    pdf_reader = PdfReader(io.BytesIO(file.read()))
+    num_pages = len(pdf_reader.pages)
     text = ""
     for page in range(num_pages):
-        page_obj = pdf_reader.getPage(page)
-        text += page_obj.extractText()
+        page_obj = pdf_reader.pages[page]
+        text += page_obj.extract_text()
     return text
 
 def load_csv(file):
     df = pd.read_csv(file)
-    text = df.to_string(index=False, header=False)
+    text = df.to_string()
     return text
 
 def load_xlsx(file):
     df = pd.read_excel(file)
-    text = df.to_string(index=False, header=False)
+    text = df.to_string()
     return text
 
 def main():
