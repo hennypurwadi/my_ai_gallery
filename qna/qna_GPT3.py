@@ -24,11 +24,12 @@ def load_xlsx(file):
     text = df.to_string()
     return text
 
-def main():    
-    # Set API key as a secret
-    with open('api_key.txt', 'r') as f:
-        api_key = f.read().strip()
-    openai.api_key = api_key    
+def main():
+    # Prompt user to enter API key
+    api_key = st.text_input("Enter your OpenAI API key", type="password")
+
+    # Set API key
+    openai.api_key = api_key
     
     # Prompt user to upload a file
     file = st.file_uploader("Upload a PDF, CSV, or XLSX file", type=["pdf", "csv", "xlsx"])
