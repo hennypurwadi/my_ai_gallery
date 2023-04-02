@@ -7,6 +7,8 @@ from PyPDF2 import PdfReader
 import openpyxl
 import base64
 
+COMPLETIONS_MODEL = "text-davinci-003"
+
 # Loading functions
 def load_pdf(file):
     pdf_reader = PdfReader(io.BytesIO(file.read()))
@@ -68,7 +70,7 @@ def main():
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload a readable .pdf(NOT an image scanned Pdf), .csv, or .xlsx file", type=["pdf", "csv", "xlsx"])
+    file = st.file_uploader("Upload less than 2500 words readable .pdf(NOT an image scanned Pdf), .csv, or .xlsx file", type=["pdf", "csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
