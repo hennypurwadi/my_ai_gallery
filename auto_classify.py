@@ -49,6 +49,7 @@ def download_button(df):
 # Streamlit app
 def main():
     st.title("Auto Classifier")
+    st.write("App that allows users to upload CSV or XLSX file, input up to 6 categories for classification, and download the resulting CSV file")
 
     # user input API key
     api_key = st.text_input("Enter your OpenAI API key got from https://platform.openai.com/account/api-keys", type="password")
@@ -56,7 +57,7 @@ def main():
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload less than 100 rows of .csv, or .xlsx file", type=["csv", "xlsx"])
+    file = st.file_uploader("Upload less than 100 rows of unlabeled texts in .csv, or .xlsx file", type=["csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
