@@ -58,7 +58,7 @@ def main():
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload less than 100 rows of .csv, or .xlsx file which has 'text' column, type=["csv", "xlsx"])
+    file = st.file_uploader("Upload less than 100 rows of .csv, or .xlsx file which has 'text' column", type=["csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
