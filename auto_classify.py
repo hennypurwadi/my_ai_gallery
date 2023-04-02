@@ -1,4 +1,3 @@
-
 import openai
 import streamlit as st
 import pandas as pd
@@ -40,24 +39,24 @@ def request_completion(prompt):
     )
     return completion_response
 
-# Download link function
-def get_csv_download_link(df):
+# Download button function
+def download_button(df):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()
-    href = f'<a href="data:file/csv;base64,{b64}" download="classification_results.csv">Download CSV</a>'
-    return href
+    button = f'<a href="data:file/csv;base64,{b64}" download="classification_results.csv"><input type="button" value="Download CSV"></a>'
+    return button
 
 # Streamlit app
 def main():
-    st.title("Document Classifier")
+    st.title("Auto Classifier")
 
-    # user to enter API key
+    # user input API key
     api_key = st.text_input("Enter your OpenAI API key got from https://platform.openai.com/account/api-keys", type="password")
     
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload less than 11 rows wof .csv, or .xlsx file", type=["csv", "xlsx"])
+    file = st.file_uploader("Upload less than 100 rows of .csv, or .xlsx file", type=["csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
@@ -82,12 +81,12 @@ def main():
         # Get the classification label
         df['label'] = df['cleaned_text'].apply(lambda x: classify_label(x, classify_prompt))
 
-        # Display the results
+        # Display results
         st.write("Classification Results:")
         st.write(df[['text', 'label']])
 
-        # Download the results as a CSV file
-        st.markdown(get_csv_download_link(df), unsafe_allow_html=True)
+        # Download the results as CSV file
+        st.markdown(download_button(df), unsafe_allow_html=True)
 
 # Run the app
 if __name__ == "__main__":
