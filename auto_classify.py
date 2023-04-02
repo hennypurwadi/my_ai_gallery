@@ -3,31 +3,18 @@ import openai
 import streamlit as st
 import pandas as pd
 import io
-from PyPDF2 import PdfReader
 import openpyxl
 import base64
 
 COMPLETIONS_MODEL = "text-davinci-003"
 
-# Loading functions
-def load_pdf(file):
-    pdf_reader = PdfReader(io.BytesIO(file.read()))
-    num_pages = len(pdf_reader.pages)
-    text = ""
-    for page in range(num_pages):
-        page_obj = pdf_reader.pages[page]
-        text += page_obj.extract_text()
-    return text
-
 def load_csv(file):
     df = pd.read_csv(file)
-    text = df.to_string()
-    return text
+    return df
 
 def load_xlsx(file):
     df = pd.read_excel(file)
-    text = df.to_string()
-    return text
+    return df
 
 # Text cleaning function
 def clean_text(text):
@@ -70,22 +57,20 @@ def main():
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload less than 2500 words readable .pdf(NOT an image scanned Pdf), .csv, or .xlsx file", type=["pdf", "csv", "xlsx"])
+    file = st.file_uploader("Upload less than 11 rows wof .csv, or .xlsx file", type=["csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
 
     # Processing
     if file and categories:
-        if file.type == "application/pdf":
-            text = load_pdf(file)
-        elif file.type == "text/csv":
-            text = load_csv(file)
+        if file.type == "text/csv":
+            df = load_csv(file)
         elif file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            text = load_xlsx(file)
+            df = load_xlsx(file)
 
         # Clean the text
-        cleaned_text = clean_text(text)
+        df['cleaned_text'] = df['text'].apply(clean_text)
 
         # Define the classification prompt
         classify_prompt = (
@@ -95,18 +80,15 @@ def main():
         )
 
         # Get the classification label
-        label = classify_label(cleaned_text, classify_prompt)
+        df['label'] = df['cleaned_text'].apply(lambda x: classify_label(x, classify_prompt))
 
-        # Create dataframe
-        df = pd.DataFrame({"text": [text], "cleaned_text": [cleaned_text], "label": [label]})
-        
-            # Display the results
+        # Display the results
         st.write("Classification Results:")
-        st.write(df)
+        st.write(df[['text', 'label']])
 
         # Download the results as a CSV file
         st.markdown(get_csv_download_link(df), unsafe_allow_html=True)
-        
-#Run the app
+
+# Run the app
 if __name__ == "__main__":
-    main()      
+    main()
