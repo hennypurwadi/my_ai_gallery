@@ -47,9 +47,9 @@ def download_button(df):
     return button
 
 # Streamlit app
+# Streamlit app
 def main():
     st.title("Auto Classifier")
-    st.write("App to classify unlabeld texts in CSV or XLSX file based on user's input for up to 6 categories for classification..")
 
     # user input API key
     api_key = st.text_input("Enter your OpenAI API key got from https://platform.openai.com/account/api-keys", type="password")
@@ -57,7 +57,7 @@ def main():
     openai.api_key = api_key
 
     # user to upload a file
-    file = st.file_uploader("Upload less than 100 rows of unlabeled texts in .csv, or .xlsx file", type=["csv", "xlsx"])
+    file = st.file_uploader("Upload less than 100 rows of .csv, or .xlsx file", type=["csv", "xlsx"])
 
     # user to input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
@@ -68,6 +68,11 @@ def main():
             df = load_csv(file)
         elif file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
             df = load_xlsx(file)
+
+        # Check if 'text' column exists
+        if 'text' not in df.columns:
+            st.error("The uploaded file should have a column named 'text'. Please check the file and try again.")
+            return
 
         # Clean the text
         df['cleaned_text'] = df['text'].apply(clean_text)
