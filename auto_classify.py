@@ -106,5 +106,5 @@ def main():
         st.markdown(get_csv_download_link(df), unsafe_allow_html=True)
         
 #Run the app
-if name == "main":
+if __name__ == "__main__":
     main()      
