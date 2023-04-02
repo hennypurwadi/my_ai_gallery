@@ -4,6 +4,7 @@ import pandas as pd
 import io
 import openpyxl
 import base64
+import re
 
 COMPLETIONS_MODEL = "text-davinci-003"
 
@@ -17,7 +18,22 @@ def load_xlsx(file):
 
 # Text cleaning function
 def clean_text(text):
-    tokens = text.split()
+    from string import punctuation
+    text=re.sub(r'(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?', 
+                ' ', text)
+    text=re.sub(r'['+punctuation+']',' ',text)
+    text=re.sub(r'#(\w+)',' ',text)
+    text=re.sub(r'@(\w+)',' ',text)
+    text = text.lower() # Convert  to lowercase
+
+    token=RegexpTokenizer(r'\w+')
+    tokens = token.tokenize(text)
+    
+#    GPT3 doesn't need stemming and lemmatizer    
+#    lemmatizer = WordNetLemmatizer()
+#    stems = [lemmatizer.lemmatize(t) for t in tokens]
+#    stemmer = PorterStemmer()
+#    stems = [stemmer.stem(t) for t in stems]    
     return ' '.join(tokens)
 
 # Classification function
@@ -47,7 +63,6 @@ def download_button(df):
     return button
 
 # Streamlit app
-# Streamlit app
 def main():
     st.title("Auto Classifier")
     st.write("App to classify unlabeld text in CSV or XLSX file based on user's input for up to 6 categories for classification.")
@@ -57,11 +72,11 @@ def main():
     
     openai.api_key = api_key
 
-    # user to upload a file
+    # user upload a file
     file = st.file_uploader("Upload a .csv or .xlsx file with no more than 100 rows. The file must contain a 'text' column.", 
                             type=["csv", "xlsx"])
 
-    # user to input up to 6 categories
+    # user input up to 6 categories
     categories = st.text_input("Enter up to 6 categories separated by commas", "")
 
     # Processing
@@ -93,9 +108,9 @@ def main():
         st.write("Classification Results:")
         st.write(df[['text', 'label']])
 
-        # Download the results as CSV file
+        # Download results as CSV file
         st.markdown(download_button(df), unsafe_allow_html=True)
 
-# Run the app
+# Run app
 if __name__ == "__main__":
     main()
