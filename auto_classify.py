@@ -49,7 +49,7 @@ def download_button(df):
 # Streamlit app
 def main():
     st.title("Auto Classifier")
-    st.title("App to classify unlabeld texts in CSV or XLSX file based on user's input for up to 6 categories for classification..")
+    st.write("App to classify unlabeld texts in CSV or XLSX file based on user's input for up to 6 categories for classification..")
 
     # user input API key
     api_key = st.text_input("Enter your OpenAI API key got from https://platform.openai.com/account/api-keys", type="password")
