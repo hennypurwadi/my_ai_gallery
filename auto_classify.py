@@ -95,5 +95,16 @@ def main():
         # Get the classification label
         label = classify_label(cleaned_text, classify_prompt)
 
-        # Create a DataFrame with the results
-        df = pd.DataFrame({"text": [
+        # Create dataframe
+        df = pd.DataFrame({"text": [text], "cleaned_text": [cleaned_text], "label": [label]})
+        
+            # Display the results
+        st.write("Classification Results:")
+        st.write(df)
+
+        # Download the results as a CSV file
+        st.markdown(get_csv_download_link(df), unsafe_allow_html=True)
+        
+#Run the app
+if name == "main":
+    main()      
