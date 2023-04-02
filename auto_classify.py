@@ -5,6 +5,8 @@ import io
 import openpyxl
 import base64
 import re
+import nltk
+from nltk.tokenize import RegexpTokenizer
 
 COMPLETIONS_MODEL = "text-davinci-003"
 

@@ -5,6 +5,6 @@ requests
 click
 openai
 openpyxl
-
+nltk
 
 
