@@ -8,7 +8,7 @@ import re
 import nltk
 from nltk.tokenize import RegexpTokenizer
 
-COMPLETIONS_MODEL = "text-davinci-003"
+COMPLETIONS_MODEL = "gpt-3.5-turbo-instruct"
 
 def load_csv(file):
     df = pd.read_csv(file)
