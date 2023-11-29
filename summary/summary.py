@@ -51,7 +51,7 @@ def main():
         # Generate summary using OpenAI API
         prompt = f"Summarize this in 300 words {text}"        
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo-instruct",
             prompt=prompt,
             temperature=0.0,
             max_tokens=1024,
