@@ -3,7 +3,7 @@ pandas
 Pillow
 requests
 click
-openai
+openai==0.28
 openpyxl
 nltk
 
