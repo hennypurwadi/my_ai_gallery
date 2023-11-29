@@ -6,7 +6,7 @@ click
 PyPDF2
 numpy
 pandas
-openai
+openai==0.28
 openpyxl
 
 
