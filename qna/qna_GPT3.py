@@ -68,7 +68,7 @@ def main():
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
-                model="text-davinci-003",
+                model="gpt-3.5-turbo-instruct",
                 stop=["Q:", "\n"],
                 timeout=100  # wait for 100 seconds before timing out
             )
